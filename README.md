@@ -1,2 +1,3 @@
-# lua-dnsdist-config-examples
+# Configurations for DNSdist
+
 Configuration examples for DNSdist PowerDNS
