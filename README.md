@@ -9,3 +9,4 @@ Configuration examples for DNSdist PowerDNS
 - [Logging DNS traffic with DNSTAP protocol](./logging_dnstap.lua)
 - [Logging DNS traffic with Protobuf protocol](./logging_protobuf.lua)
 - [Flush cache for domain with DNS NOTIFY](./cache_flush_notify.lua)
+- [Echo capability of ip address from domain name for development](./echoip.lua)
