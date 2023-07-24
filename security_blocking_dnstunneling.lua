@@ -8,12 +8,46 @@ trusted_domains = newSuffixMatchNode()
 trusted_domains:add(newDNSName("google.fr."))
 
 -- blacklist ip during 60s
-blacklisted_ips = TimedIPSetRule()
+blacklistedIPs=TimedIPSetRule()
+addAction(blacklistedIPs:slice(), RCodeAction(DNSRCode.REFUSED))
+
+local ratelimited_ips = {}
+local ratelimited_duration = 10 -- in seconds
+local blocking_duration = 60 -- in seconds
+
 local function blacklistIP(dq)
-   blacklisted_ips:add(dq.remoteaddr, 60)
+   blacklisted_ips:add(dq.remoteaddr, blocking_duration)
    return DNSAction.Refused
 end
-addAction(blacklisted_ips:slice(), RCodeAction(DNSRCode.REFUSED))
+
+function countRateLimit(dq)
+   local client_ip = dq.remoteaddr:toString()
+   local now = os.time()
+   if ratelimited_ips[client_ip] ~= nil then
+      ratelimited_ips[client_ip].queries = ratelimited_ips[client_ip].queries + 1
+   else
+      ratelimited_ips[client_ip] = { queries = 1, timestamp = now, count = 0 }
+   end
+   return DNSAction.Drop
+end
+
+function maintenance()
+  local now = os.time()
+  for k, v in pairs(ratelimited_ips) do
+        elapsed = now - v.timestamp
+        qps = v.queries / elapsed
+        if qps > 0 then
+                v.count = v.count + 1
+        end
+        if elapsed >= ratelimited_duration then
+                if v.count >= ratelimited_duration then
+                        blacklistedIPs:add(newCA(k), blocking_duration)
+                end
+                ratelimited_ips[k] = nil
+        end
+        v.queries = 0
+  end
+end
 
 -- match uncommon qtype like NULL (10), PRIVATE (65399) - works fine to block iodine
 addAction(AndRule({OrRule({QTypeRule(10), QTypeRule(65399)}), NotRule(SuffixMatchNodeRule(trusted_domains, true)) }), SetTagAction('malicious_qtypes', 'matched'))
@@ -33,7 +67,7 @@ addAction(TagRule('malicious_ratelimiting'), DnstapLogAction("event_ratelimiting
 -- finally refuses and blacklist client ip during limited time
 addAction(TagRule('malicious_qtypes'), LuaAction(blacklistIP))
 addAction(TagRule('malicious_longqnames'), LuaAction(blacklistIP))
-addAction(TagRule('malicious_ratelimiting'), LuaAction(blacklistIP))
+addAction(TagRule('malicious_ratelimiting'), LuaAction(countRateLimit))
 
 -- Update the dynamic blocks with refused reply by default
 setDynBlocksAction(DNSAction.Refused)
