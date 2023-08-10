@@ -1,5 +1,10 @@
 -- Generic rules to block malicious dns traffic like DNS tunneling
 
+-- listen on localhost
+setLocal("0.0.0.0:53", {})
+-- backend dns
+newServer({address = "1.1.1.1:53", pool="default"})
+
 -- remote security events logger based on dnstap
 security_dnstap_logger = newFrameStreamTcpLogger("10.0.0.100:6000")
 
@@ -81,3 +86,6 @@ dbr:setResponseByteRate(1000, 5, "Exceeded resp BW rate", 60)
 function maintenance()
   dbr:apply()
 end
+
+-- default rule
+addAction( AllRule(), PoolAction("default"))

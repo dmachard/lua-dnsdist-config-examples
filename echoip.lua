@@ -1,5 +1,10 @@
 -- Echo capability of ip address from domain name for development
 
+-- listen on localhost
+setLocal("0.0.0.0:53", {})
+-- backend dns
+newServer({address = "1.1.1.1:53", pool="default"})
+
 local function echoIpAddress(dq)
         -- list of regexs to find ip in qname
         ipsregex = {}
@@ -42,3 +47,6 @@ local function echoIpAddress(dq)
 end
 
 addAction("local.dev.", LuaAction(echoIpAddress))
+
+-- default rule
+addAction( AllRule(), PoolAction("default"))
