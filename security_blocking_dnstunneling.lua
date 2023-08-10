@@ -16,7 +16,7 @@ local ratelimited_duration = 10 -- in seconds
 local blocking_duration = 60 -- in seconds
 
 local function blacklistIP(dq)
-   blacklisted_ips:add(dq.remoteaddr, blocking_duration)
+   blacklistedIPs:add(dq.remoteaddr, blocking_duration)
    return DNSAction.Refused
 end
 
