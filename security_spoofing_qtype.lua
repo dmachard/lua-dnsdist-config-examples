@@ -1,0 +1,6 @@
+addAction(OrRule({QTypeRule(DNSQType.A),QTypeRule(DNSQType.AAAA) }), SpoofAction({"192.0.2.2", "2001:db8::3:1"}))
+addAction(QTypeRule(DNSQType.CNAME), SpoofCNAMEAction("aaa.com", {}))
+addAction(QTypeRule(DNSQType.TXT), SpoofRawAction({"\005hello"}) )
+addAction(QTypeRule(DNSQType.MX), SpoofRawAction({"\000\010\004smtp\006google\003com\000"}) )
+addAction(QTypeRule(DNSQType.NS), SpoofRawAction({"\003ns\049\006google\003com\000"}) )
+addAction(QTypeRule(DNSQType.SOA), SpoofRawAction({"\003ns\049\006google\003com\000\009dns\045admin\006google\003com\000\031Eb\020\000\000\003\132\000\000\003\132\000\000\007\008\000\000\000\060"}) )

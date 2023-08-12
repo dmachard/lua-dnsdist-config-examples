@@ -2,33 +2,42 @@
 
 Configuration examples for DNSdist PowerDNS
 
-Basic examples:
+**Admin configuration**:
 
-- [Configuration with load balancing on public DNS](./basic_config.lua)
+- [DoH/DoT/Do53 listeners with all admin interfaces enabled](./advanced_config.lua)
 
-Security configuration:
+**Routing DNS traffic**:
 
-- [Security: Ads/Malwares blocking with external CDB database](./blacklist_cdb.lua)
-- [Security: DNS tunneling blocking](./security_blocking_dnstunneling.lua)
-- [Security: blackhole/spoofing domains with external files](./security_blackhole_domains.lua)
-- [Security: Blacklist IP during XX seconds with DNS NOTIFY](./blacklist_ip_notify.lua)
+- [Match Qname with regular expression](./routing_regex.lua)
+- [Tag your traffic and applied specified rules on it](./routing_tag_traffic.lua)
 
-Logging DNS traffic:
+**Security configuration**:
 
-- [Logging DNS traffic with DNSTAP protocol](./logging_dnstap.lua)
-- [Logging DNS traffic with Protobuf protocol](./logging_protobuf.lua)
+- [Ads/Malwares blocking with external CDB database](./security_blacklist_cdb.lua)
+- [DNS tunneling blocking](./security_blocking_dnstunneling.lua)
+- [Blackhole/spoofing domains with external files](./security_blackhole_domains.lua)
+- [Blacklist IP during XX seconds, the list of IPs is managed with DNS notify](./security_blacklist_ip_notify.lua)
+- [Blacklist domains, the list is managed with DNS notify](./security_blacklist_ip_notify.lua)
+- [Spoofing DNS responses like TXT, A, AAAA, MX and more...](./security_spoofing_qtype.lua)
 
-Miscs:
+**Logging DNS traffic**:
 
-- [Flush cache for domain with DNS NOTIFY](./cache_flush_notify.lua)
-- [Echo capability of ip address from domain name for development](./echoip.lua)
+- [Remote DNS logging with DNSTAP protocol](./logging_dnstap.lua)
+- [Remote DNS logging with Protobuf protocol](./logging_protobuf.lua)
+
+**Miscs**:
+
+- [Full configuration with load balancing on public DNS resolvers](./miscs_basic_config.lua)
+- [Flush cache for domain with DNS NOTIFY](./miscs_cache_flush_notify.lua)
+- [Echo capability of ip address from domain name for development](./miscs_echoip.lua)
+- [Resolve hostname from config](./miscs_resolve_hostname.lua)
 
 ## Run config from docker
 
 Start
 
 ```bash
-sudo docker run -d -p 5553:53/udp -p 5553:53/tcp --name=dnsdist --volume=$PWD/basic_config.lua:/etc/dnsdist/conf.d/dnsdist.conf:ro powerdns/dnsdist-18:1.8.0
+sudo docker run -d -p 5553:53/udp -p 5553:53/tcp -p 8083:8080 --name=dnsdist --volume=$PWD/basic_config.lua:/etc/dnsdist/conf.d/dnsdist.conf:ro powerdns/dnsdist-18:1.8.0
 ```
 
 Reload configuration
@@ -50,8 +59,14 @@ Marking downstream 1.1.1.1:53 as 'up'
 Polled security status of version 1.8.0 at startup, no known issues reported: OK
 ```
 
-Testing
+Testing DNS resolution
 
 ```bash
 dig @127.0.0.1 -p 5553 +tcp google.com
+```
+
+Testing Web console access
+
+```bash
+curl -u admin:open http://127.0.0.1:8083
 ```
