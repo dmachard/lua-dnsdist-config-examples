@@ -11,10 +11,10 @@ local blackholeDomains = newSuffixMatchNode()
 
 local function onRegisterDomain(dq)
     if blackholeDomains:check(dq.qname) then
-        infolog("removing domain " ..  dq.qname:toString() .. " from blacklist")
+        infolog("removing domain: " ..  dq.qname:toString() .. " from blacklist")
         blackholeDomains:remove(dq.qname)
     else
-        infolog("blacklisting the domain: " ..  dq.qname:toString())
+        infolog("blacklisting domain: " ..  dq.qname:toString())
         blackholeDomains:add(dq.qname)
     end
     return DNSAction.Spoof, "success"
