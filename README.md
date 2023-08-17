@@ -16,7 +16,8 @@ Configuration examples for DNSdist PowerDNS
 - [Ads/Malwares blocking with external CDB database](./security_blacklist_cdb.lua)
 - [DNS tunneling blocking](./security_blocking_dnstunneling.lua)
 - [Blackhole/spoofing domains with external files](./security_blackhole_domains.lua)
-- [Blacklist IP during XX seconds, the list of IPs is managed with DNS notify](./security_blacklist_ip_notify.lua)
+- [Blacklist IP addresses with DNS UPDATE control and dynamic blocking duration](./security_blacklist_ip_dnsupdate.lua)
+- [Blacklist IP during XX seconds, the list of IPs is managed with DNS notify and TTL for duration](./security_blacklist_ip_notify.lua)
 - [List of temporarily blocked domains, the list is managed with DNS notify](./security_blocklist_domains.lua)
 - [Spoofing DNS responses like TXT, A, AAAA, MX and more...](./security_spoofing_qtype.lua)
 

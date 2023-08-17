@@ -1,10 +1,9 @@
 -- listen on localhost
 setLocal("0.0.0.0:53", {})
--- backend dns
 newServer({address = "1.1.1.1:53", pool="default"})
 
+-- blacklist part
 local blocking_duration = 60 -- in seconds
-
 blacklistedIPs=TimedIPSetRule()
 
 local function onRegisterIP(dq)
@@ -18,7 +17,7 @@ end
 addAction(OpcodeRule(DNSOpcode.Notify), LuaAction(onRegisterIP))
 
 -- Refused all IP addresses blacklisted
-addAction(blacklistedIPs:slice(), sRCodeAction(DNSRCode.REFUSED))
+addAction(blacklistedIPs:slice(), RCodeAction(DNSRCode.REFUSED))
 
 -- default rule
 addAction( AllRule(), PoolAction("default"))
