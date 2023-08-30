@@ -1,9 +1,5 @@
 -- bind on ip any
 setLocal('0.0.0.0:53', { reusePort=true })
-addLocal('0.0.0.0:53', { reusePort=true })
-addLocal('::')
-addDOHLocal('0.0.0.0:443', '/etc/dnsdist/cert.pem', '/etc/dnsdist/key.pem')
-addTLSLocal('0.0.0.0:853', '/etc/dnsdist/cert.pem', '/etc/dnsdist/key.pem')
 
 -- allow all IP access
 setACL("0.0.0.0/0")

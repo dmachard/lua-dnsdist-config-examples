@@ -2,9 +2,13 @@
 
 Configuration examples for DNSdist PowerDNS
 
-**Admin configuration**:
+**Default**:
 
-- [DoH/DoT/Do53 listeners with all admin interfaces enabled](./advanced_config.lua)
+- [Default configuration provided by PowerDNS](./default_config.lua)
+
+**Administration**:
+
+- [Enable web admin and console interfaces](./admin_config.lua)
 
 **Routing DNS traffic**:
 
