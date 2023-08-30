@@ -42,7 +42,7 @@ Configuration examples for DNSdist PowerDNS
 Start
 
 ```bash
-sudo docker run -d -p 5553:53/udp -p 5553:53/tcp -p 8083:8080 --name=dnsdist --volume=$PWD/basic_config.lua:/etc/dnsdist/conf.d/dnsdist.conf:ro powerdns/dnsdist-18:1.8.0
+sudo docker run -d -p 8053:53/udp -p 8053:53/tcp -p 8083:8080 --name=dnsdist --volume=$PWD/basic_config.lua:/etc/dnsdist/conf.d/dnsdist.conf:ro powerdns/dnsdist-18:1.8.0
 ```
 
 Reload configuration
@@ -67,7 +67,7 @@ Polled security status of version 1.8.0 at startup, no known issues reported: OK
 Testing DNS resolution
 
 ```bash
-dig @127.0.0.1 -p 5553 +tcp google.com
+dig @127.0.0.1 -p 8053 +tcp google.com
 ```
 
 Testing Web console access
