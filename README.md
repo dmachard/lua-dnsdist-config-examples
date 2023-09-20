@@ -28,6 +28,7 @@ Configuration examples for DNSdist PowerDNS
 **Logging DNS traffic**:
 
 - [Remote DNS logging with DNSTAP protocol](./logging_dnstap.lua)
+- [Add extra informations in DNStap field](./logging_dnstap_extra.lua)
 - [Remote DNS logging with Protobuf protocol](./logging_protobuf.lua)
 
 **Miscs**:
