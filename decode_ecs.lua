@@ -1,30 +1,34 @@
 -- how to use this lib:
 -- import ecs rule in your dnsdist.conf
 -- dofile("/etc/dnsdist/decode_ecs.lua")
--- addAction(LuaRule(ECSOptionRule), PoolAction("cloudflare"))
+--
+-- listNmg = newNMG()
+-- listNmg:addMask("192.168.1.0/24")
+--
+-- addAction(LuaRule(ECSOptionRule(listNmg)), PoolAction("cloudflare"))
 
 -- global variable
-listNmg = newNMG()
-listNmg:addMask("192.168.1.0/24")
 
 -- ecs rule to match specific Client Subnet defined in the 
 -- listNmg variable
-function ECSOptionRule(dq)
-  local options = dq:getEDNSOptions()
+function ECSOptionRule(nmg)
+  return function(dq)
+    local options = dq:getEDNSOptions()
 
-  if options[EDNSOptionCode.ECS] == nil then
-    return false
-  end
+    if options[EDNSOptionCode.ECS] == nil then
+      return false
+    end
 
-  if options[EDNSOptionCode.ECS]:count() ~= 1 then
-    return false
-  end
+    if options[EDNSOptionCode.ECS]:count() ~= 1 then
+      return false
+    end
 
-  local ecs = DecodeECS(options[EDNSOptionCode.ECS]:getValues()[1])
-  if ecs == nil then
-    return false
+    local ecs = DecodeECS(options[EDNSOptionCode.ECS]:getValues()[1])
+    if ecs == nil then
+      return false
+    end
+    return nmg:match(ecs)
   end
-  return listNmg:match(ecs)
 end
 
 -- this function return the client subnet as a comboAddress truncated with associated netmask
