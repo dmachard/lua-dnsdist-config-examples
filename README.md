@@ -40,6 +40,7 @@ Configuration examples for DNSdist PowerDNS
 - [Echo capability of ip address from domain name for development](./miscs_echoip.lua)
 - [Resolve hostname from config](./miscs_resolve_hostname.lua)
 - [Add uniq ID between queries and replies and send it through EDNS ](./miscs_add_uniqid.lua)
+- [Set RequestorID with FFI](./miscs_ffi_requestorid.lua)
 
 ## Run config from docker
 
