@@ -39,6 +39,7 @@ Configuration examples for DNSdist PowerDNS
 - [Flush cache for domain with DNS NOTIFY](./miscs_cache_flush_notify.lua)
 - [Echo capability of ip address from domain name for development](./miscs_echoip.lua)
 - [Resolve hostname from config](./miscs_resolve_hostname.lua)
+- [Add uniq ID between queries and replies and send it through EDNS ](./miscs_add_uniqid.lua)
 
 ## Run config from docker
 

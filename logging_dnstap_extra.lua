@@ -34,4 +34,5 @@ addAction(ProbaRule(0.5), PoolAction("poolA"))
 addAction(AllRule(), PoolAction("poolB"))
 
 -- rules for replies
+addCacheHitResponseAction(AllRule(), DnstapLogResponseAction("dnsdist1", rl, alterDnstapCachedResponse))
 addResponseAction(AllRule(), DnstapLogResponseAction("dnsdist1", rl, alterDnstapResponse))
